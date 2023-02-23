@@ -1,0 +1,45 @@
+{
+  "name": "bienesraices_mvc",
+  "version": "1.0.0",
+  "description": "Real state ptoyect(Proyecto de bienes raices)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./index.js",
+    "server": "nodemon index.js",
+    "css": "postcss public/css/tailwind.css -o public/css/app.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OEEC/real_state.git"
+  },
+  "keywords": [
+    "MVC",
+    "Pug",
+    "TailWind",
+    "MySQL",
+    "Sequelize.",
+    "NODjs"
+  ],
+  "author": "Oscar Escobar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OEEC/real_state/issues"
+  },
+  "homepage": "https://github.com/OEEC/real_state#readme",
+  "dependencies": {
+    "db-migrate": "^0.11.13",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.1.2",
+    "pug": "^3.0.2",
+    "sequelize": "^6.28.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.2.7"
+  }
+}

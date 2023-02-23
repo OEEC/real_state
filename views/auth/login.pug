@@ -1,0 +1,23 @@
+extends ../layout/index
+
+block content
+  div.py-10 
+    h1.text-4xl.my-10.font-extrabold.text-center Real
+      span.font-normal State
+    h2.text-center.text-2xl.font-extrabold= pageHeader
+
+    div.mt-8.mx-auto.max-w-md
+      div.bg-white.py-8.px-4.shadow
+        form.space-y-5
+          div
+            label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="email") Email:
+            input#email.w-full.px-3.py-3.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="your Email" type="email" name="email")
+          div
+            label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="password") Password:
+            input#password.w-full.px-3.py-3.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="password" type="password" name="password")
+          
+          div.flex.items-center.justify-between.px-2
+            a.text-gray-500.text-xs(href="/auth/register") You do not have an account?
+            a.text-gray-500.text-xs(href="/auth/forgotPassword") i forget my password 
+          
+          input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="sing in")
