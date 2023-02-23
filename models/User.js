@@ -1,12 +1,12 @@
 import { DataTypes } from "sequelize";
-import db from "./config/database.js"
+import db from "../config/database.js"
 
 const User = db.define('users',{
     name:{
         type: DataTypes.STRING,
         allowNull: false 
     },
-    emial:{
+    email:{
         type: DataTypes.STRING,
         allowNull: false 
     },
