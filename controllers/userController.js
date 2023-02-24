@@ -25,27 +25,27 @@ const saveNewUSer = async (req, res) => {
     await check('email').isEmail().withMessage("it's must be an email").run(req);
     await check('password').isLength({min: 8}).withMessage("at last 8 characters").run(req);
     //this validation down dosen't work an after tryin a custom validation and other things a deciden make one manualy
-   // await check('repassword').equals('password').withMessage("passwords not match").run(req);
+    //await check('repassword').equals('password').withMessage("passwords not match").run(req);
     let result = validationResult(req);
     //result = result.array();
     console.log("🚀 ~ file: userController.js:31 ~ saveNewUSer ~ result:", result)
     //Manualy validate passwords
+    let matchPass = [];
     let samePassword = true;
     let notMachMessage = ""
     if(req.body.password !== req.body.repassword){
        samePassword = false
        notMachMessage = "Passwords not match"
+       matchPass.push({itMatch: samePassword, msg: notMachMessage});
     }
+    console.log("🚀 ~ file: userController.js:41 ~ saveNewUSer ~ matchPass:", matchPass)
     //if there are errors
     if(!result.isEmpty()){
         //returning errors
        return res.render('auth/register', {
             pageHeader: "Make an account",
             errors: result.array(),
-            matchPass: {
-                itMatch: samePassword,
-                msg: notMachMessage
-            },
+            matchPass: matchPass,
             user: {
                 name: req.body.name,
                 email: req.body.email
@@ -55,10 +55,7 @@ const saveNewUSer = async (req, res) => {
         console.log("🚀 ~ file: userController.js:50 ~ saveNewUSer ~ samePassword:", samePassword)
         return res.render('auth/register', {
             pageHeader: "Make an account",
-            matchPass: {
-                itMatch: samePassword,
-                msg: notMachMessage
-            },
+            matchPass: matchPass,
             user: {
                 name: req.body.name,
                 email: req.body.email
@@ -68,19 +65,20 @@ const saveNewUSer = async (req, res) => {
     //validating duplicate users
     const existUser = await User.findOne({where: { email: req.body.email } });
     //if user is already registeres
-    // if(existUser){
-    //     //returning mesage
-    //     return res.render('auth/register', {
-    //         pageHeader: "Make an account",
-    //         errors: [{ msg: "Email already registered"}],
-    //         user: {
-    //             name: req.body.name,
-    //             email: req.body.email
-    //         }
-    //     });
-    // }
-    // const user = await User.create(req.body)
-    // res.send(user);
+    if(existUser){
+        //returning mesage
+        return res.render('auth/register', {
+            pageHeader: "Make an account",
+            errors: [{ msg: "Email already registered"}],
+            user: {
+                name: req.body.name,
+                email: req.body.email
+            }
+        });
+    }
+    //create new user
+    const user = await User.create(req.body)
+    res.send(user);
 }
 
 export {
