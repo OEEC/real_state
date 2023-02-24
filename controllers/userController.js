@@ -1,5 +1,7 @@
 import { check, validationResult } from 'express-validator'
 import User from "../models/User.js"
+import { generatedId } from '../helpers/tokens.js';
+import {registerEmail} from '../helpers/emails.js'
 
 const loginForm = (req, res) => {
     res.render('auth/login', {
@@ -27,8 +29,6 @@ const saveNewUSer = async (req, res) => {
     //this validation down dosen't work an after tryin a custom validation and other things a deciden make one manualy
     //await check('repassword').equals('password').withMessage("passwords not match").run(req);
     let result = validationResult(req);
-    //result = result.array();
-    console.log("🚀 ~ file: userController.js:31 ~ saveNewUSer ~ result:", result)
     //Manualy validate passwords
     let matchPass = [];
     let samePassword = true;
@@ -38,7 +38,6 @@ const saveNewUSer = async (req, res) => {
        notMachMessage = "Passwords not match"
        matchPass.push({itMatch: samePassword, msg: notMachMessage});
     }
-    console.log("🚀 ~ file: userController.js:41 ~ saveNewUSer ~ matchPass:", matchPass)
     //if there are errors
     if(!result.isEmpty()){
         //returning errors
@@ -52,7 +51,6 @@ const saveNewUSer = async (req, res) => {
             }
         });
     } else if(!samePassword) {
-        console.log("🚀 ~ file: userController.js:50 ~ saveNewUSer ~ samePassword:", samePassword)
         return res.render('auth/register', {
             pageHeader: "Make an account",
             matchPass: matchPass,
@@ -62,8 +60,11 @@ const saveNewUSer = async (req, res) => {
             }
         });
     }
+
+    //extract data
+    const { name, email, password } = req.body
     //validating duplicate users
-    const existUser = await User.findOne({where: { email: req.body.email } });
+    const existUser = await User.findOne({where: { email } });
     //if user is already registeres
     if(existUser){
         //returning mesage
@@ -71,14 +72,31 @@ const saveNewUSer = async (req, res) => {
             pageHeader: "Make an account",
             errors: [{ msg: "Email already registered"}],
             user: {
-                name: req.body.name,
-                email: req.body.email
+                name: name,
+                email: email
             }
         });
     }
-    //create new user
-    const user = await User.create(req.body)
-    res.send(user);
+    //create a new user
+   const user = await User.create({
+        name,
+        email,
+        password,
+        token: generatedId()
+    })
+
+    //Sending confirmation email
+    registerEmail({
+        nanme: user.name,
+        email: user.email,
+        token: user.token
+    });
+
+    //Confirmation message
+    res.render('templates/message', {
+        pageHeader: "Account Created",
+        message: "We send a confirmation email"
+    });
 }
 
 export {
