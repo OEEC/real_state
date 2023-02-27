@@ -99,9 +99,30 @@ const saveNewUSer = async (req, res) => {
     });
 }
 
+//Email confiomation
+const emailConfimration = async (req, res) => {
+    const { token } = req.params;
+    const user = await User.findOne({where: { token } });
+    if(!user){
+        return res.render('auth/confirmAccount', {
+            pageHeader: "Confirm Account error",
+            message: "there's is an error with your activation.",
+            error: true
+        });
+    }
+    user.confirmed = true;
+    user.token = "";
+    await user.save();
+    res.render('auth/confirmAccount', {
+        pageHeader: "Account confirmed",
+        message: "Your accunt as been confirmed",
+        error: false
+    });
+}   
 export {
     loginForm,
     registerForm,
     forgotPasswordForm,
-    saveNewUSer
+    saveNewUSer,
+    emailConfimration
 }

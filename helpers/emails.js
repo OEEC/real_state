@@ -22,7 +22,7 @@ const registerEmail = async (data) => {
             <p>Hello ${name}, we need you to confirm your account from RealState.com </p>
 
             <p> You cant confirm you account in the next link:
-            <a href="">Confirm Account</a></p>
+            <a href="${process.env.BACKEND_URL}:${process.env.PORT ?? 3000}/auth/confirmEmail/${token}">Confirm Account</a></p>
 
             <p>If you don't create this account you can ignore this message</p>
         `
