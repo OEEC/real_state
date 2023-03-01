@@ -8,3 +8,6 @@ block content
 
   div(class="bg-white shadow py-8 px-4 rounded max-w-md mx-auto")
     p(class= error ? 'bg-red-500' : 'bg-green-500').py-2.px-5.rounded-lg.w-full.font-bold.text-center= message
+
+    if !error
+      a(href="/auth/login" class="text-center font-bold text.sm text-state-600 uppercase mt-10 block") click here now to start session
