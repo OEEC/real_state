@@ -2,6 +2,7 @@ import express from "express";
 import csrf from 'csurf'
 import cookieParser from 'cookie-parser'
 import userRoutes from "./router/userRoutes.js"
+import propertiesRouter from "./router/propertyRouter.js"
 import db from "./config/database.js"
 //const express = require('express');
 
@@ -30,7 +31,7 @@ app.set('views', './views');
 //public
 app.use(express.static('public'));
 app.use('/auth', userRoutes);
-
+app.use('/properties', propertiesRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

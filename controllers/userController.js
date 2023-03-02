@@ -97,7 +97,7 @@ const authenticateUser = async (req, res) => {
     httpOnly: true,
     //secure: true
     //sameSite: true
-  }).redirect('/properties');
+  }).redirect('/properties/myProperties');
 }
 
 //------------- Regitser User functions -----------------------------//
